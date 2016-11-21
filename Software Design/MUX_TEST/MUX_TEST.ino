@@ -4,7 +4,7 @@ int DEACTIVE_RGB[18] = {0,75,220,0,75,220,0,75,220,0,75,220,0,75,220,0,75,220};
 int AFLAG = 0;
 
 void setup(){
-  Serial.begin(9500);
+  Serial.begin(9600);
   pinMode(LED_R, OUTPUT);
   pinMode(LED_B, OUTPUT);
   pinMode(LED_G, OUTPUT);
