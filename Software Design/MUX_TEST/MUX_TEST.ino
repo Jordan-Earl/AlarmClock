@@ -52,7 +52,7 @@ void pinSelect(int bit_sel){
        digitalWrite(SEL_B1,(((bit_sel&2)==2) ? HIGH : LOW));
        digitalWrite(SEL_B2,(((bit_sel&4)==4) ? HIGH : LOW));
        
-       /*//Debugging Code
+       /*//Debugging Code::
          Serial.print(digitalRead(SEL_B2));
          Serial.print(digitalRead(SEL_B1));
          Serial.print(digitalRead(SEL_B0));*/
@@ -67,7 +67,7 @@ void rgbSelect(int color_sel){
        analogWrite(LED_B,ACTIVE_RGB[color_sel+1]);
        analogWrite(LED_G,ACTIVE_RGB[color_sel+2]);
 
-    /*//Debug Code:
+    /*//Debug Code::
        Serial.print(ACTIVE_RGB[color_sel]);
        Serial.print("\t");
        Serial.print(ACTIVE_RGB[color_sel+1]);
