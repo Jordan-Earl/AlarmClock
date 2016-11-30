@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Alarmtooth</string>
+
+    <string name="Title">Find Bluetooth Devices!</string>
+    <string name="action_settings">Settings</string>
+    <string name="search">Search</string>
+
+</resources>
