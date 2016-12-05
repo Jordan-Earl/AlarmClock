@@ -1,5 +1,8 @@
 package snuze.alarmtooth;
 
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +10,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.bluetooth.BluetoothAdapter;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 
+import java.util.Set;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -15,8 +22,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 
 public class MainActivity extends AppCompatActivity {
-
-
+    private final int REQUEST_ENABLE_BT = 1;
+    BluetoothAdapter Adapter = BluetoothAdapter.getDefaultAdapter();
+    ArrayAdapter<String> deviceArray = new ArrayAdapter<>(this,0);
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -27,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BluetoothAdapter Adapter = BluetoothAdapter.getDefaultAdapter();
 
         if (Adapter == null) {
             System.out.print("Device does not support BlueTooth!");
@@ -35,8 +42,20 @@ public class MainActivity extends AppCompatActivity {
 
         if (!Adapter.isEnabled()) {
             Intent enableBT = new Intent(Adapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBT,1);
+            startActivityForResult(enableBT,REQUEST_ENABLE_BT);
         }
+
+        //Gets a set of bonded devices to see if its connected to the Alarm Clock
+        Set<BluetoothDevice> pairedDevices = Adapter.getBondedDevices();
+        if(pairedDevices.size()>0){
+            for (BluetoothDevice device : pairedDevices){
+                deviceArray.add(device.getName()+"\n"+device.getAddress());
+            }
+        }
+
+
+
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -98,5 +117,20 @@ public class MainActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    public void btSearch (View view){
+        Adapter.startDiscovery();
+        final BroadcastReceiver mReciever = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if(BluetoothDevice.ACTION_FOUND.equals(action)){
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    deviceArray.add(device.getName()+"\n"+device.getAddress());
+                }
+            }
+        };
+
     }
 }
