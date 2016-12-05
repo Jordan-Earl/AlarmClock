@@ -1,20 +1,30 @@
 package snuze.alarmtooth;
 
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.bluetooth.BluetoothAdapter;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity{
 
 
     /**
@@ -22,12 +32,29 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private TextView t;
+    private final int ACTION_REQUEST_BT = 1;
+    private ArrayAdapter<String> knownDevices;
+    private String someText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        someText = "clicked";
+        knownDevices = new ArrayAdapter<>(this, 0);
+
+        t = (TextView) findViewById(R.id.textView);
         BluetoothAdapter Adapter = BluetoothAdapter.getDefaultAdapter();
+
+        final Button searchButton = (Button) findViewById(R.id.searchButton);
+        searchButton.setOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                t.setText(someText);
+            }
+        });
+
 
         if (Adapter == null) {
             System.out.print("Device does not support BlueTooth!");
@@ -35,12 +62,49 @@ public class MainActivity extends AppCompatActivity {
 
         if (!Adapter.isEnabled()) {
             Intent enableBT = new Intent(Adapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBT,1);
+            startActivityForResult(enableBT, ACTION_REQUEST_BT);
         }
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(BT_Receiver, filter);
+
+        Set<BluetoothDevice> Devices = Adapter.getBondedDevices();
+        if (Devices.size() > 0){
+            for (BluetoothDevice device : Devices){
+                knownDevices.add( device.getName() + "\n" + device.getAddress() );
+            }
+        }
+
+
+        Adapter.startDiscovery();
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
+    private BroadcastReceiver BT_Receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // Add the name and address to an array adapter to show in a ListView
+                knownDevices.add(device.getName() + "\n" + device.getAddress());
+                someText = device.getName() + " : " + device.getAddress();
+            }
+        }
+    };
+
+    protected void OnDestroy(){
+
+        unregisterReceiver(BT_Receiver);
+
+        super.onDestroy();
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
 }
+
