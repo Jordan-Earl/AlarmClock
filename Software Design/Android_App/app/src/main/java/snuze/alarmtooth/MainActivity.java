@@ -1,6 +1,7 @@
 package snuze.alarmtooth;
 
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +22,9 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.IOException;
 import java.util.Set;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -32,26 +35,32 @@ public class MainActivity extends AppCompatActivity{
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    private TextView t;
+    private TextView t, bt;
     private final int ACTION_REQUEST_BT = 1;
     private ArrayAdapter<String> knownDevices;
+    private BluetoothAdapter Adapter;
     private String someText;
+    protected UUID MY_UUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         someText = "clicked";
         knownDevices = new ArrayAdapter<>(this, 0);
+        MY_UUID = UUID.randomUUID();
 
+        bt = (TextView) findViewById(R.id.BT_device);
         t = (TextView) findViewById(R.id.textView);
-        BluetoothAdapter Adapter = BluetoothAdapter.getDefaultAdapter();
+        Adapter = BluetoothAdapter.getDefaultAdapter();
 
         final Button searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 t.setText(someText);
+                bt.setText(someText);
             }
         });
 
@@ -92,10 +101,57 @@ public class MainActivity extends AppCompatActivity{
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // Add the name and address to an array adapter to show in a ListView
                 knownDevices.add(device.getName() + "\n" + device.getAddress());
-                someText = device.getName() + " : " + device.getAddress();
+                someText = device.getName() + " : " + device.getAddress() ;
             }
         }
     };
+
+    private class ConnectThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final BluetoothDevice mmDevice;
+
+        public ConnectThread(BluetoothDevice device) {
+            // Use a temporary object that is later assigned to mmSocket,
+            // because mmSocket is final
+            BluetoothSocket tmp = null;
+            mmDevice = device;
+
+            // Get a BluetoothSocket to connect with the given BluetoothDevice
+            try {
+                // MY_UUID is the app's UUID string, also used by the server code
+                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+            } catch (IOException e) {System.out.print(e + "Did not create RF Socket"); }
+            mmSocket = tmp;
+        }
+
+        public void run() {
+            // Cancel discovery because it will slow down the connection
+            Adapter.cancelDiscovery();
+
+            try {
+                // Connect the device through the socket. This will block
+                // until it succeeds or throws an exception
+                mmSocket.connect();
+            } catch (IOException connectException) {
+                // Unable to connect; close the socket and get out
+                System.out.print("Could not connect to device. . .");
+                try {
+                    mmSocket.close();
+                } catch (IOException closeException) {System.out.print(closeException + ": Socket did not close . . ."); }
+                return;
+            }
+
+            // Do work to manage the connection (in a separate thread)
+            //manageConnectedSocket(mmSocket);
+        }
+
+        /** Will cancel an in-progress connection, and close the socket */
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) { System.out.print(e + ": Socket did not close . . .");}
+        }
+    }
 
     protected void OnDestroy(){
 
