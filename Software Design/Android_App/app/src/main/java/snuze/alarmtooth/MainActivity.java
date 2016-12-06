@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        someText = "clicked";
+        someText = "";
         knownDevices = new ArrayAdapter<>(this, 0);
         MY_UUID = UUID.randomUUID();
 
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity{
         searchButton.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                t.setText(someText);
                 bt.setText(someText);
             }
         });
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
         if (!Adapter.isEnabled()) {
-            Intent enableBT = new Intent(Adapter.ACTION_REQUEST_ENABLE);
+            Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBT, ACTION_REQUEST_BT);
         }
 
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity{
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // Add the name and address to an array adapter to show in a ListView
                 knownDevices.add(device.getName() + "\n" + device.getAddress());
-                someText = device.getName() + " : " + device.getAddress() ;
+                someText = someText + device.getName() + " : " + device.getAddress() + "\n";
             }
         }
     };
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity{
                 try {
                     mmSocket.close();
                 } catch (IOException closeException) {System.out.print(closeException + ": Socket did not close . . ."); }
-                return;
+
             }
 
             // Do work to manage the connection (in a separate thread)

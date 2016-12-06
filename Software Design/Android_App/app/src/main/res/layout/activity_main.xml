@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/searchButton"
         android:layout_marginTop="17dp"
+        android:textColor="#FFF"
         android:id="@+id/BT_device" />
 
 </RelativeLayout>
