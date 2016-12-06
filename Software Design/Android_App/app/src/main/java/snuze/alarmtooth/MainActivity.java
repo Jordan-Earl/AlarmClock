@@ -12,13 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.bluetooth.BluetoothAdapter;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Set;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -26,10 +23,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
-    private final int REQUEST_ENABLE_BT = 1;
-    BluetoothAdapter Adapter = BluetoothAdapter.getDefaultAdapter();
-    ArrayAdapter<String> deviceArray = new ArrayAdapter<>(this,0);
 
 public class MainActivity extends AppCompatActivity{
 
@@ -53,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
 
         t = (TextView) findViewById(R.id.textView);
         BluetoothAdapter Adapter = BluetoothAdapter.getDefaultAdapter();
+
         final Button searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener( new View.OnClickListener(){
             @Override
@@ -68,14 +62,6 @@ public class MainActivity extends AppCompatActivity{
 
         if (!Adapter.isEnabled()) {
             Intent enableBT = new Intent(Adapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBT,REQUEST_ENABLE_BT);
-        }
-
-        //Gets a set of bonded devices to see if its connected to the Alarm Clock
-        Set<BluetoothDevice> pairedDevices = Adapter.getBondedDevices();
-        if(pairedDevices.size()>0){
-            for (BluetoothDevice device : pairedDevices){
-                deviceArray.add(device.getName()+"\n"+device.getAddress());
             startActivityForResult(enableBT, ACTION_REQUEST_BT);
         }
 
@@ -88,7 +74,8 @@ public class MainActivity extends AppCompatActivity{
                 knownDevices.add( device.getName() + "\n" + device.getAddress() );
             }
         }
-		
+
+
         Adapter.startDiscovery();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -175,6 +162,4 @@ public class MainActivity extends AppCompatActivity{
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
-
 }
-
