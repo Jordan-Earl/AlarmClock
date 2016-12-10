@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.bluetooth.BluetoothAdapter;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,11 +30,6 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity{
 
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
     private TextView t, bt;
     private final int ACTION_REQUEST_BT = 1;
@@ -56,10 +52,21 @@ public class MainActivity extends AppCompatActivity{
         Adapter = BluetoothAdapter.getDefaultAdapter();
 
         final Button searchButton = (Button) findViewById(R.id.searchButton);
-        searchButton.setOnClickListener( new View.OnClickListener(){
+        searchButton.setOnClickListener( new OnClickListener(){
             @Override
             public void onClick(View v){
                 bt.setText(someText);
+            }
+        });
+
+        final Button customizeButton = (Button) findViewById(R.id.customizeButton);
+        customizeButton.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intentMain = new Intent(MainActivity.this, Customizations.class);
+                Bundle extras = new Bundle();
+                intentMain.putExtras(extras);
+                startActivity(intentMain);
             }
         });
 
