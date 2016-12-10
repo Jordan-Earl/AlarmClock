@@ -1,0 +1,481 @@
+Index: app/src/main/res/layout/activity_customizations.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_customizations.xml	(revision )
++++ app/src/main/res/layout/activity_customizations.xml	(revision )
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="utf-8"?>
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/activity_customizations"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:paddingBottom="@dimen/activity_vertical_margin"
++    android:paddingLeft="@dimen/activity_horizontal_margin"
++    android:paddingRight="@dimen/activity_horizontal_margin"
++    android:paddingTop="@dimen/activity_vertical_margin"
++    tools:context="snuze.alarmtooth.Customizations">
++
++
++    <android.support.design.widget.TabLayout
++        android:id="@+id/tabs"
++        android:layout_width="match_parent"
++        android:layout_alignParentTop="true"
++        android:layout_alignParentLeft="true"
++        android:layout_alignParentStart="true"
++        android:layout_height="50dp">
++
++        <android.support.design.widget.TabItem
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Alarms"
++            />
++
++        <android.support.design.widget.TabItem
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Colors" />
++
++        <android.support.design.widget.TabItem
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Sounds" />
++
++        <android.support.design.widget.TabItem
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Alerts" />
++
++
++    </android.support.design.widget.TabLayout>
++</RelativeLayout>
+Index: app/src/main/java/snuze/alarmtooth/Customizations.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/snuze/alarmtooth/Customizations.java	(revision )
++++ app/src/main/java/snuze/alarmtooth/Customizations.java	(revision )
+@@ -0,0 +1,13 @@
++package snuze.alarmtooth;
++
++import android.support.v7.app.AppCompatActivity;
++import android.os.Bundle;
++
++public class Customizations extends AppCompatActivity {
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_customizations);
++    }
++}
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(date 1481403467000)
++++ build.gradle	(revision )
+@@ -5,7 +5,7 @@
+         jcenter()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:2.2.2'
++        classpath 'com.android.tools.build:gradle:2.2.3'
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+         // in the individual module build.gradle files
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(date 1481403467000)
++++ app/src/main/res/layout/activity_main.xml	(revision )
+@@ -1,6 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:paddingLeft="@dimen/activity_horizontal_margin"
+     android:paddingRight="@dimen/activity_horizontal_margin"
+     android:paddingTop="@dimen/activity_vertical_margin"
+     android:background="#111156"
+@@ -23,7 +26,7 @@
+     <Button
+         android:layout_width="100dp"
+         android:layout_height="25dp"
+-        android:background="#fff"
++        android:background="#FFF"
+         android:text="@string/search"
+         android:textColor="#000"
+         android:layout_below="@+id/textView"
+@@ -38,6 +41,18 @@
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/searchButton"
+         android:layout_marginTop="17dp"
++        android:textColor="#FFF"
+         android:id="@+id/BT_device" />
++
++    <Button
++        android:layout_width="100dp"
++        android:layout_height="25dp"
++        android:background="#FFF"
++        android:text="Customize"
++        android:textColor="#000"
++        android:layout_below="@+id/BT_device"
++        android:layout_centerHorizontal="true"
++        android:id="@+id/customizeButton"
++        />
+ 
+-</RelativeLayout>
++</RelativeLayout>
+\ No newline at end of file
+Index: app/src/main/java/snuze/alarmtooth/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/snuze/alarmtooth/MainActivity.java	(date 1481403467000)
++++ app/src/main/java/snuze/alarmtooth/MainActivity.java	(revision )
+@@ -7,6 +7,11 @@
+ import android.view.Menu;
+ import android.view.MenuItem;
+ import android.view.View;
++
++=======
++import android.view.View.OnClickListener;
++import android.widget.ArrayAdapter;
++>>>>>>> .merge_file_a19752
+ import android.widget.Button;
+ import android.widget.TextView;
+ 
+@@ -20,12 +25,15 @@
+ 
+ public class MainActivity extends AppCompatActivity{
+ 
++<<<<<<< .merge_file_a09596
+ 
+     /**
+      * ATTENTION: This was auto-generated to implement the App Indexing API.
+      * See https://g.co/AppIndexing/AndroidStudio for more information.
+      */
+ 
++=======
++>>>>>>> .merge_file_a19752
+     private GoogleApiClient client;
+     private TextView bt;
+     private String someText;
+@@ -37,31 +45,132 @@
+         setContentView(R.layout.activity_main);
+ 
+         someText = "";
++<<<<<<< .merge_file_a09596
+ 
+         BluetoothHelper BT = new BluetoothHelper(this);
+ 
+         someText = BT.someText;
++=======
++        knownDevices = new ArrayAdapter<>(this, 0);
++        MY_UUID = UUID.randomUUID();
++>>>>>>> .merge_file_a19752
+ 
+         bt = (TextView) findViewById(R.id.BT_device);
+ 
+ 
+         final Button searchButton = (Button) findViewById(R.id.searchButton);
+-        searchButton.setOnClickListener( new View.OnClickListener(){
++        searchButton.setOnClickListener( new OnClickListener(){
+             @Override
+             public void onClick(View v){
+                 bt.setText(someText);
+             }
+         });
+ 
++        final Button customizeButton = (Button) findViewById(R.id.customizeButton);
++        customizeButton.setOnClickListener(new OnClickListener(){
++            @Override
++            public void onClick(View view){
++                Intent intentMain = new Intent(MainActivity.this, Customizations.class);
++                Bundle extras = new Bundle();
++                intentMain.putExtras(extras);
++                startActivity(intentMain);
++            }
++        });
+ 
+ 
++<<<<<<< .merge_file_a09596
++=======
++        if (Adapter == null) {
++            System.out.print("Device does not support BlueTooth!");
++        }
+ 
++        if (!Adapter.isEnabled()) {
++            Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
++            startActivityForResult(enableBT, ACTION_REQUEST_BT);
++        }
++
++        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
++        registerReceiver(BT_Receiver, filter);
++
++        Set<BluetoothDevice> Devices = Adapter.getBondedDevices();
++        if (Devices.size() > 0){
++            for (BluetoothDevice device : Devices){
++                knownDevices.add( device.getName() + "\n" + device.getAddress() );
++            }
++        }
++
++>>>>>>> .merge_file_a19752
++
++
+         // ATTENTION: This was auto-generated to implement the App Indexing API.
+         // See https://g.co/AppIndexing/AndroidStudio for more information.
+         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+     }
+ 
++<<<<<<< .merge_file_a09596
++=======
++    private BroadcastReceiver BT_Receiver = new BroadcastReceiver() {
++        public void onReceive(Context context, Intent intent) {
++            String action = intent.getAction();
++            // When discovery finds a device
++            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
++                // Get the BluetoothDevice object from the Intent
++                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
++                // Add the name and address to an array adapter to show in a ListView
++                knownDevices.add(device.getName() + "\n" + device.getAddress());
++                someText = someText + device.getName() + " : " + device.getUuids().toString() + "\n";
++            }
++        }
++    };
+ 
++    private class ConnectThread extends Thread {
++        private final BluetoothSocket mmSocket;
++        private final BluetoothDevice mmDevice;
++
++        public ConnectThread(BluetoothDevice device) {
++            // Use a temporary object that is later assigned to mmSocket,
++            // because mmSocket is final
++            BluetoothSocket tmp = null;
++            mmDevice = device;
++
++            // Get a BluetoothSocket to connect with the given BluetoothDevice
++            try {
++                // MY_UUID is the app's UUID string, also used by the server code
++                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
++            } catch (IOException e) {System.out.print(e + "Did not create RF Socket"); }
++            mmSocket = tmp;
++        }
++
++        public void run() {
++            // Cancel discovery because it will slow down the connection
++            Adapter.cancelDiscovery();
++
++            try {
++                // Connect the device through the socket. This will block
++                // until it succeeds or throws an exception
++                mmSocket.connect();
++            } catch (IOException connectException) {
++                // Unable to connect; close the socket and get out
++                System.out.print("Could not connect to device. . .");
++                try {
++                    mmSocket.close();
++                } catch (IOException closeException) {System.out.print(closeException + ": Socket did not close . . ."); }
++
++            }
++
++            // Do work to manage the connection (in a separate thread)
++            //manageConnectedSocket(mmSocket);
++        }
++
++        /** Will cancel an in-progress connection, and close the socket */
++        public void cancel() {
++            try {
++                mmSocket.close();
++            } catch (IOException e) { System.out.print(e + ": Socket did not close . . .");}
++        }
++    }
++>>>>>>> .merge_file_a19752
++
+     protected void OnDestroy(){
+ 
+         super.onDestroy();
+@@ -125,5 +234,4 @@
+         AppIndex.AppIndexApi.end(client, getIndexApiAction());
+         client.disconnect();
+     }
+-}
++}
+\ No newline at end of file
+-
+\ No newline at end of file
+Index: app/app.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/app.iml	(date 1481403467000)
++++ app/app.iml	(revision )
+@@ -66,14 +66,6 @@
+       <sourceFolder url="file://$MODULE_DIR$/src/main/jni" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/rs" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/shaders" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/res" type="java-test-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/assets" type="java-test-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/aidl" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/jni" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/resources" type="java-test-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" type="java-test-resource" />
+@@ -82,13 +74,31 @@
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/jni" isTestSource="true" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/shaders" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/res" type="java-test-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/assets" type="java-test-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/aidl" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/jni" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/builds" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
+-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/jars" />
+-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.0/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/design/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.0.1/jars" />
++      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/transition/25.0.1/jars" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.4.0/jars" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.4.0/jars" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.4.0/jars" />
+@@ -114,11 +124,21 @@
+     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+     <orderEntry type="library" exported="" name="play-services-appindexing-8.4.0" level="project" />
+-    <orderEntry type="library" exported="" name="appcompat-v7-23.0.0" level="project" />
+-    <orderEntry type="library" exported="" name="support-v4-23.0.0" level="project" />
++    <orderEntry type="library" exported="" name="support-annotations-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="design-25.0.1" level="project" />
+     <orderEntry type="library" exported="" name="play-services-base-8.4.0" level="project" />
++    <orderEntry type="library" exported="" name="transition-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="support-compat-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="support-fragment-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="animated-vector-drawable-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="support-v4-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="support-core-ui-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="support-media-compat-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="support-vector-drawable-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="appcompat-v7-25.0.1" level="project" />
++    <orderEntry type="library" exported="" name="recyclerview-v7-25.0.1" level="project" />
+     <orderEntry type="library" exported="" name="play-services-basement-8.4.0" level="project" />
+-    <orderEntry type="library" exported="" name="support-annotations-23.0.0" level="project" />
++    <orderEntry type="library" exported="" name="support-core-utils-25.0.1" level="project" />
+     <orderEntry type="library" exported="" name="android-android-23" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/gradle.xml	(date 1481403467000)
++++ .idea/gradle.xml	(revision )
+@@ -3,8 +3,9 @@
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+-        <option name="distributionType" value="DEFAULT_WRAPPED" />
++        <option name="distributionType" value="LOCAL" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="gradleHome" value="C:\Program Files\Android\Android Studio\gradle\gradle-2.14.1" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(date 1481403467000)
++++ app/build.gradle	(revision )
+@@ -26,4 +26,6 @@
+     compile fileTree(dir: 'libs', include: ['*.jar'])
+     compile 'com.android.support:appcompat-v7:23.0.0'
+     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
++    compile 'com.android.support:design:25.0.1'
++    compile 'com.android.support:support-v4:25.0.1'
+ }
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(date 1481403467000)
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -1,7 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-    package="snuze.alarmtooth" >
++    package="snuze.alarmtooth">
+ 
+     <uses-permission android:name="android.permission.BLUETOOTH" />
+     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+@@ -10,20 +9,25 @@
+         android:allowBackup="true"
+         android:icon="@mipmap/ic_launcher"
+         android:label="@string/app_name"
+-        android:theme="@style/AppTheme" >
++        android:theme="@style/AppTheme">
+         <activity
+             android:name=".MainActivity"
+-            android:label="@string/app_name" >
++            android:label="@string/app_name">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+ 
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+-        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
++        </activity>
++        <!--
++ ATTENTION: This was auto-generated to add Google Play services to your project for
++     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
++        -->
+         <meta-data
+             android:name="com.google.android.gms.version"
+             android:value="@integer/google_play_services_version" />
++
++        <activity android:name=".Customizations"></activity>
+     </application>
+ 
+-</manifest>
++</manifest>
+\ No newline at end of file
