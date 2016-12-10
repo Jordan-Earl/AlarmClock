@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,12 +21,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 
 public class MainActivity extends AppCompatActivity{
-
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
 
     private GoogleApiClient client;
     private TextView bt;
@@ -53,6 +49,16 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        final Button customizeButton = (Button) findViewById(R.id.customizeButton);
+        customizeButton.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intentMain = new Intent(MainActivity.this, Customizations.class);
+                Bundle extras = new Bundle();
+                intentMain.putExtras(extras);
+                startActivity(intentMain);
+            }
+        });
 
 
 
@@ -126,4 +132,3 @@ public class MainActivity extends AppCompatActivity{
         client.disconnect();
     }
 }
-

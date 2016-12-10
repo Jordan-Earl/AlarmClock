@@ -1,0 +1,13 @@
+package snuze.alarmtooth;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class Customizations extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_customizations);
+    }
+}
