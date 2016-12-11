@@ -4,5 +4,6 @@
     <string name="Title">Find Bluetooth Devices!</string>
     <string name="action_settings">Settings</string>
     <string name="search">Search</string>
+    <string name="Toolbar">toolbar</string>
 
 </resources>

@@ -1,42 +1,43 @@
 package snuze.alarmtooth;
 
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.bluetooth.BluetoothAdapter;
 import android.view.View;
+<<<<<<< HEAD
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+=======
+>>>>>>> master
 import android.widget.Button;
 import android.widget.TextView;
+
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.io.IOException;
-import java.util.Set;
-import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity{
 
+<<<<<<< HEAD
+=======
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+
+>>>>>>> master
     private GoogleApiClient client;
-    private TextView t, bt;
-    private final int ACTION_REQUEST_BT = 1;
-    private ArrayAdapter<String> knownDevices;
-    private BluetoothAdapter Adapter;
+    private TextView bt;
     private String someText;
-    protected UUID MY_UUID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +45,18 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         someText = "";
+<<<<<<< HEAD
         knownDevices = new ArrayAdapter<>(this, 0);
         MY_UUID = UUID.randomUUID();
+=======
+
+        BluetoothHelper BT = new BluetoothHelper(this);
+
+        someText = BT.someText;
+>>>>>>> master
 
         bt = (TextView) findViewById(R.id.BT_device);
-        t = (TextView) findViewById(R.id.textView);
-        Adapter = BluetoothAdapter.getDefaultAdapter();
+
 
         final Button searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener( new OnClickListener(){
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
+<<<<<<< HEAD
         if (Adapter == null) {
             System.out.print("Device does not support BlueTooth!");
         }
@@ -90,14 +98,16 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
+=======
+>>>>>>> master
 
-        Adapter.startDiscovery();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+<<<<<<< HEAD
     private BroadcastReceiver BT_Receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -158,10 +168,10 @@ public class MainActivity extends AppCompatActivity{
             } catch (IOException e) { System.out.print(e + ": Socket did not close . . .");}
         }
     }
+=======
+>>>>>>> master
 
     protected void OnDestroy(){
-
-        unregisterReceiver(BT_Receiver);
 
         super.onDestroy();
 
