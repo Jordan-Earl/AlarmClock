@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity{
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // Add the name and address to an array adapter to show in a ListView
                 knownDevices.add(device.getName() + "\n" + device.getAddress());
-                someText = someText + device.getName() + " : " + device.getUuids().toString() + "\n";
+                someText = someText + device.getName() + " : " + device.getUuids()+ "\n";
             }
         }
     };
