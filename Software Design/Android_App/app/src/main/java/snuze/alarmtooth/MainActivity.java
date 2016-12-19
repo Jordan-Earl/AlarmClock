@@ -18,6 +18,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import android.os.Handler;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -25,18 +26,19 @@ public class MainActivity extends AppCompatActivity{
     private GoogleApiClient client;
     private TextView bt;
     private String someText;
-
+    private Handler mHandler;
+    private BluetoothServicer BT = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        BT = new BluetoothServicer(this, mHandler);
         someText = "";
 
-        BluetoothHelper BT = new BluetoothHelper(this);
 
-        someText = BT.someText;
 
         bt = (TextView) findViewById(R.id.BT_device);
 
@@ -45,9 +47,13 @@ public class MainActivity extends AppCompatActivity{
         searchButton.setOnClickListener( new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                bt.setText(someText);
+               Intent intent = new Intent(MainActivity.this, DeviceSearchActivity.class);
+               Bundle extras = new Bundle();
+                intent.putExtras(extras);
+                startActivityForResult(intent, 1);
             }
         });
+
 
         final Button customizeButton = (Button) findViewById(R.id.customizeButton);
         customizeButton.setOnClickListener(new OnClickListener(){
@@ -71,7 +77,6 @@ public class MainActivity extends AppCompatActivity{
     protected void OnDestroy(){
 
         super.onDestroy();
-
     }
 
 
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity{
                 .setActionStatus(Action.STATUS_TYPE_COMPLETED)
                 .build();
     }
-
+//TODO: Make chat at bottom of MainActivity to read in all of the Bluetooth Commmunication
     @Override
     public void onStart() {
         super.onStart();

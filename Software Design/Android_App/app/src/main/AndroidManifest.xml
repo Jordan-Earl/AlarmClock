@@ -28,6 +28,11 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".Customizations"></activity>
+        <activity
+            android:name=".DeviceSearchActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Holo.Dialog"/>
     </application>
 
 </manifest>
