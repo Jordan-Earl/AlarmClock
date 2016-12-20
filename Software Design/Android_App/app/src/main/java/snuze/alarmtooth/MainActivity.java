@@ -1,15 +1,20 @@
 package snuze.alarmtooth;
 
 
+import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -19,15 +24,15 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import android.os.Handler;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity{
 
     private GoogleApiClient client;
-    private TextView bt;
-    private String someText;
-    private Handler mHandler;
     private BluetoothServicer BT = null;
+    private ArrayAdapter<String> MACs;
+    private Handler mHandler= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +41,11 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         BT = new BluetoothServicer(this, mHandler);
-        someText = "";
 
+        MACs = new ArrayAdapter<>(this, R.layout.device_name);
 
-
-        bt = (TextView) findViewById(R.id.BT_device);
-
+        ListView mAddresses = (ListView) findViewById(R.id.Devices);
+        mAddresses.setAdapter(MACs);
 
         final Button searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener( new View.OnClickListener(){
@@ -49,20 +53,9 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v){
                Intent intent = new Intent(MainActivity.this, DeviceSearchActivity.class);
                Bundle extras = new Bundle();
-                intent.putExtras(extras);
-                startActivityForResult(intent, 1);
-            }
-        });
+               intent.putExtras(extras);
+               startActivityForResult(intent, 1);
 
-
-        final Button customizeButton = (Button) findViewById(R.id.customizeButton);
-        customizeButton.setOnClickListener(new OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intentMain = new Intent(MainActivity.this, Customizations.class);
-                Bundle extras = new Bundle();
-                intentMain.putExtras(extras);
-                startActivity(intentMain);
             }
         });
 
@@ -79,6 +72,19 @@ public class MainActivity extends AppCompatActivity{
         super.onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1){
+
+           String address = data.getExtras().getString(DeviceSearchActivity.DEVICE_ADDRESS);
+
+           BluetoothDevice device = BT.getDevice(address);
+
+           BT.connect(device, false);
+
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,4 +142,8 @@ public class MainActivity extends AppCompatActivity{
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+
+
+
 }
+

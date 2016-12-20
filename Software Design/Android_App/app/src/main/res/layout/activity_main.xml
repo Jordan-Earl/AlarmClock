@@ -52,7 +52,7 @@
         android:textColor="#FFF"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:id="@+id/textView" />
+        android:id="@+id/title" />
 
     <ListView
         android:layout_width="match_parent"

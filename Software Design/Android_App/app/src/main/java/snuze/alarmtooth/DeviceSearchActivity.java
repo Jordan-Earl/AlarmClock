@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -25,7 +24,7 @@ public class DeviceSearchActivity extends Activity {
 
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mNewDevicesAdapter;
-
+    public static String DEVICE_ADDRESS = "device_address";
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -96,7 +95,12 @@ public class DeviceSearchActivity extends Activity {
                 mBtAdapter.cancelDiscovery();
 
                 String info = ((TextView) v).getText().toString();
+                String MAC = info.substring(info.length()-17);
+                Intent intent = new Intent();
+                intent.putExtra(DEVICE_ADDRESS, MAC);
 
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
     };
     private void doDiscovery(){

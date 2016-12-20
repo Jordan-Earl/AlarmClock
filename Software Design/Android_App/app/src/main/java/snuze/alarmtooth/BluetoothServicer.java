@@ -23,7 +23,6 @@ public class BluetoothServicer {
         // Name for the SDP record when creating server socket
         private static final String NAME_SECURE = "BluetoothChatSecure";
         private static final String NAME_INSECURE = "BluetoothChatInsecure";
-        public String someText;
 
         // Unique UUID for this application
         private static final UUID MY_UUID_SECURE =
@@ -32,8 +31,8 @@ public class BluetoothServicer {
                 UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
         // Member fields
-        private final BluetoothAdapter mAdapter;
-        private final Handler mHandler;
+        private  BluetoothAdapter mAdapter = null;
+        private  Handler mHandler = null;
         private AcceptThread mSecureAcceptThread;
         private AcceptThread mInsecureAcceptThread;
         private ConnectThread mConnectThread;
@@ -58,6 +57,11 @@ public class BluetoothServicer {
             mHandler = handler;
         }
 
+        public BluetoothDevice getDevice(String address){
+
+            return mAdapter.getRemoteDevice(address);
+        }
+
         /**
          * Set the current state of the chat connection
          *
@@ -68,7 +72,7 @@ public class BluetoothServicer {
             mState = state;
 
             // Give the new state to the Handler so the UI Activity can update
-            mHandler.obtainMessage(Constants.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+           // mHandler.obtainMessage(Constants.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
         }
 
         /**
