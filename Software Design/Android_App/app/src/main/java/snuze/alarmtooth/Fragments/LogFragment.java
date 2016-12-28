@@ -1,6 +1,7 @@
-package snuze.alarmtooth;
+package snuze.alarmtooth.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-import snuze.alarmtooth.dummy.DummyContent;
+import snuze.alarmtooth.DeviceSearchActivity;
+import snuze.alarmtooth.R;
 import snuze.alarmtooth.dummy.DummyContent.DummyItem;
 
 import java.util.List;
@@ -51,6 +54,8 @@ public class LogFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -72,9 +77,34 @@ public class LogFragment extends Fragment {
             }
             //recyclerView.setAdapter(new MyLogRecyclerViewAdapter(mLog.ITEMS, mListener));
         }
+        Button searchButton = (Button) view.findViewById(R.id.searcher);
+
+        searchButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DeviceSearchActivity.class);
+                Bundle extras = new Bundle();
+                intent.putExtras(extras);
+                startActivityForResult(intent, 1);
+            }
+        });
+
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1){
+           if(data!=null) {
+               String address = data.getExtras().getString(DeviceSearchActivity.DEVICE_ADDRESS);
+
+               //BluetoothDevice device = bluetoothAssistant.getDevice(address);
+
+               //bluetoothAssistant.connect(device, false);
+           }
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -103,6 +133,7 @@ public class LogFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);

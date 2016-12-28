@@ -103,6 +103,7 @@ public class DeviceSearchActivity extends Activity {
                 finish();
             }
     };
+
     private void doDiscovery(){
         setTitle(R.string.scanning);
 

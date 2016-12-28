@@ -1,102 +1,98 @@
 package snuze.alarmtooth;
 
 import android.bluetooth.BluetoothDevice;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Message;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
+
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import snuze.alarmtooth.Fragments.AlarmFragment;
+import snuze.alarmtooth.Fragments.LogFragment;
+import snuze.alarmtooth.Fragments.PagerAdapter;
+import snuze.alarmtooth.dummy.DummyContent;
+
 import android.os.Handler;
-import android.widget.TextView;
+
 
 import static snuze.alarmtooth.Constants.MESSAGE_TOAST;
 
-
-public class MainActivity extends AppCompatActivity implements AlarmFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements AlarmFragment.OnFragmentInteractionListener,
+        LogFragment.OnListFragmentInteractionListener {
 
     private GoogleApiClient client;
-    private BluetoothServicer BT = null;
+    private BluetoothAssistant bluetoothAssistant = null;
     private ArrayAdapter<String> MACs;
-    private TextView status = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bluetoothAssistant = new BluetoothAssistant(this, mHandler);
 
-        status = (TextView) findViewById(R.id.status);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        if(savedInstanceState == null){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.AlarmSet, AlarmFragment.newInstance("",""), "clock")
-                    .commit();
-        }
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        BT = new BluetoothServicer(this, mHandler);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
 
-        MACs = new ArrayAdapter<>(this, R.layout.device_name);
-
-        ListView mAddresses = (ListView) findViewById(R.id.Devices);
-        mAddresses.setBackgroundColor(255);
-        mAddresses.setAdapter(MACs);
-
-        final Button searchButton = (Button) findViewById(R.id.searchButton);
-        searchButton.setOnClickListener( new View.OnClickListener(){
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
-            public void onClick(View v){
-               Intent intent = new Intent(MainActivity.this, DeviceSearchActivity.class);
-               Bundle extras = new Bundle();
-               intent.putExtras(extras);
-               startActivityForResult(intent, 1);
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
-
-
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    public void onListFragmentInteraction(DummyContent.DummyItem item){}
 
     protected void OnDestroy(){
 
         super.onDestroy();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1){
-           if(data!=null) {
-               String address = data.getExtras().getString(DeviceSearchActivity.DEVICE_ADDRESS);
-
-               BluetoothDevice device = BT.getDevice(address);
-
-               BT.connect(BT.getDevice(address), false);
-
-               MACs.add(address);
-           }
-        }
-    }
+   // @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1){
+//           if(data!=null) {
+//               String address = data.getExtras().getString(DeviceSearchActivity.DEVICE_ADDRESS);
+//
+//               BluetoothDevice device = bluetoothAssistant.getDevice(address);
+//
+//               bluetoothAssistant.connect(device, false);
+//           }
+//        }
+//    }
 
     public void onFragmentInteraction (Uri uri){
-
     }
 
     @Override
@@ -144,10 +140,7 @@ public class MainActivity extends AppCompatActivity implements AlarmFragment.OnF
         public void handleMessage(Message msg){
             switch(msg.what){
                 case MESSAGE_TOAST:
-
-
             }
-
         }
 
     };

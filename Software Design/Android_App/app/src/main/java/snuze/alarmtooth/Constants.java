@@ -17,7 +17,7 @@
 package snuze.alarmtooth;
 
 /**
- * Defines several constants used between {@link BluetoothServicer} and the UI.
+ * Defines several constants used between {@link BluetoothAssistant} and the UI.
  */
 public interface Constants {
 
@@ -31,5 +31,4 @@ public interface Constants {
     // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
-
 }

@@ -49,43 +49,11 @@
 
     </android.support.design.widget.TabLayout>
 
-
-    <TextView
-        android:text="@string/Title"
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFF"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:id="@+id/title" />
+        android:id="@+id/viewpager">
+    </android.support.v4.view.ViewPager>
 
-    <TextView
-        android:text="status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FFF"
-        android:id="@+id/status"
-    />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/Devices"
-        android:textColor="#FFF"
-        />
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/AlarmSet"
-        />
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="25dp"
-        android:background="#FFF"
-        android:text="@string/search"
-        android:textColor="#000"
-        android:layout_marginTop="17dp"
-        android:id="@+id/searchButton" />
 
 </LinearLayout>

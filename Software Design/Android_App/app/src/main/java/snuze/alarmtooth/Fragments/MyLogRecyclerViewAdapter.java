@@ -1,4 +1,4 @@
-package snuze.alarmtooth;
+package snuze.alarmtooth.Fragments;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import snuze.alarmtooth.LogFragment.OnListFragmentInteractionListener;
+import snuze.alarmtooth.Fragments.LogFragment.OnListFragmentInteractionListener;
+import snuze.alarmtooth.R;
 import snuze.alarmtooth.dummy.DummyContent.DummyItem;
 
 import java.util.List;
