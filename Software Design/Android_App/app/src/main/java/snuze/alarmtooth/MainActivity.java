@@ -1,12 +1,9 @@
 package snuze.alarmtooth;
 
-
-import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +12,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -24,15 +19,17 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import android.os.Handler;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import static snuze.alarmtooth.Constants.MESSAGE_TOAST;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements AlarmFragment.OnFragmentInteractionListener {
 
     private GoogleApiClient client;
     private BluetoothServicer BT = null;
     private ArrayAdapter<String> MACs;
-    private Handler mHandler= null;
+    private TextView status = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +37,21 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        status = (TextView) findViewById(R.id.status);
+
+        if(savedInstanceState == null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.AlarmSet, AlarmFragment.newInstance("",""), "clock")
+                    .commit();
+        }
+
         BT = new BluetoothServicer(this, mHandler);
 
         MACs = new ArrayAdapter<>(this, R.layout.device_name);
 
         ListView mAddresses = (ListView) findViewById(R.id.Devices);
+        mAddresses.setBackgroundColor(255);
         mAddresses.setAdapter(MACs);
 
         final Button searchButton = (Button) findViewById(R.id.searchButton);
@@ -76,14 +83,20 @@ public class MainActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1){
+           if(data!=null) {
+               String address = data.getExtras().getString(DeviceSearchActivity.DEVICE_ADDRESS);
 
-           String address = data.getExtras().getString(DeviceSearchActivity.DEVICE_ADDRESS);
+               BluetoothDevice device = BT.getDevice(address);
 
-           BluetoothDevice device = BT.getDevice(address);
+               BT.connect(BT.getDevice(address), false);
 
-           BT.connect(device, false);
-
+               MACs.add(address);
+           }
         }
+    }
+
+    public void onFragmentInteraction (Uri uri){
+
     }
 
     @Override
@@ -124,6 +137,22 @@ public class MainActivity extends AppCompatActivity{
                 .build();
     }
 //TODO: Make chat at bottom of MainActivity to read in all of the Bluetooth Commmunication
+
+
+    private final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            switch(msg.what){
+                case MESSAGE_TOAST:
+
+
+            }
+
+        }
+
+    };
+
+
     @Override
     public void onStart() {
         super.onStart();

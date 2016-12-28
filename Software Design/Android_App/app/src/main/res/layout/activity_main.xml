@@ -8,16 +8,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#111156"
+    android:background="#000016"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         app:tabIndicatorColor="@android:color/holo_orange_light"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         app:tabIndicatorHeight="1dp"
-        style="@style/Widget.AppCompat.Toolbar">
+        style="@style/Widget.Design.TabLayout"
+        app:tabTextColor="#FFF">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
@@ -41,6 +42,10 @@
             android:layout_height="wrap_content"
             android:icon="@mipmap/settings_launcher" />
 
+        <android.support.design.widget.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/LOG" />
 
     </android.support.design.widget.TabLayout>
 
@@ -54,11 +59,26 @@
         android:textSize="18sp"
         android:id="@+id/title" />
 
+    <TextView
+        android:text="status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        android:id="@+id/status"
+    />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Devices" />
+        android:id="@+id/Devices"
+        android:textColor="#FFF"
+        />
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/AlarmSet"
+        />
     <Button
         android:layout_width="100dp"
         android:layout_height="25dp"
