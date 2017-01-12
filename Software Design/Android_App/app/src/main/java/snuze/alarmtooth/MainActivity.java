@@ -1,6 +1,5 @@
 package snuze.alarmtooth;
 
-import android.bluetooth.BluetoothDevice;
 import android.net.Uri;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements AlarmFragment.OnF
     private GoogleApiClient client;
     private BluetoothAssistant bluetoothAssistant = null;
     private ArrayAdapter<String> MACs;
+    private String Log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements AlarmFragment.OnF
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                adapter.updateLog(Log);
             }
 
             @Override
@@ -77,20 +78,6 @@ public class MainActivity extends AppCompatActivity implements AlarmFragment.OnF
 
         super.onDestroy();
     }
-
-   // @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1){
-//           if(data!=null) {
-//               String address = data.getExtras().getString(DeviceSearchActivity.DEVICE_ADDRESS);
-//
-//               BluetoothDevice device = bluetoothAssistant.getDevice(address);
-//
-//               bluetoothAssistant.connect(device, false);
-//           }
-//        }
-//    }
 
     public void onFragmentInteraction (Uri uri){
     }

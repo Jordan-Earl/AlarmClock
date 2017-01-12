@@ -7,6 +7,10 @@
     <TimePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/timePicker" />
+        android:id="@+id/timePicker"
+        android:background="#000"
+        android:headerBackground="#12F"
+        android:numbersBackgroundColor="#00000000"
+        android:outlineProvider="background" />
 
 </FrameLayout>
